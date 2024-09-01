@@ -1,0 +1,53 @@
+<html lang = "en">
+<head>
+    <meta charset = "UTF-8">
+    <meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
+
+    <link rel = "stylesheet" href = "/static/style.css">
+    <link rel = "preconnect" href = "https://fonts.googleapis.com">
+    <link rel = "preconnect" href = "https://fonts.gstatic.com" crossorigin>
+    <link href = "https://fonts.googleapis.com/css2?family=Signika:wght@400;500;600;700&display=swap" rel = "stylesheet">
+
+    <title> ASCII Art Web </title>
+
+</head>
+<body>
+
+    <h1> Ascii Art Generator </h1>
+
+    <form action = "/ascii-art" method = "post" autocomplete = "off">
+
+        <label for = "text"> Enter your text here </label>
+        <textarea id = "text" name = "text" rows = "2" required>{{.Text}}</textarea><br><br>
+        
+        <label for = "style"> Choose your ascii art style </label>
+        <div class = "options">
+
+            <div class = "option">
+                <input type = "radio" id = "style1" name = "style" value = "standard">
+                <label for = "style1"> Standard </label>
+            </div>
+
+            <div class = "option">
+                <input type = "radio" id = "style2" name = "style" value = "shadow">
+                <label for = "style2"> Shadow </label>
+            </div>
+
+            <div class = "option">
+                <input type = "radio" id = "style3" name = "style" value = "thinkertoy">
+                <label for = "style3"> Thinkertoy </label>
+            </div>
+
+        </div>
+
+        <div class = "submit-container">
+            <button type = "submit" id = "submit"> Create Ascii Art </button>
+        </div>
+
+    </form>
+    <div class = "container"> 
+        <h2> Your Ascii Art </h2>
+        <pre>{{.Result}}</pre>
+    </div>
+</body>
+</html>
