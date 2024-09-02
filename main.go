@@ -16,7 +16,7 @@ type Data struct {
 }
 
 func init() {
-	loadTemplates("home.html", "400.html", "404.html", "500.html")
+	loadTemplates("home.html", "400.html", "404.html", "405.html", "500.html")
 }
 
 
@@ -26,7 +26,7 @@ func main() {
 	http.HandleFunc("/ascii-art", asciiArtHandler)
 
 	// Serve static files from the static directory
-	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("style"))))
 
 	log.Println("Starting server on http://localhost:8080")
 	if err := http.ListenAndServe(":8080", nil); err != nil {
@@ -73,8 +73,9 @@ func asciiArtHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if style == "" {
-		style = "standard"
+	if style != "standard" && style != "thinkertoy" && style != "shadow" {
+		renderError(w, http.StatusBadRequest)
+		return
 	}
 
 	// Load banner and generate ASCII art
@@ -114,13 +115,14 @@ func renderError(w http.ResponseWriter, status int) {
 		errorTemplate = "400.html"
 	case http.StatusNotFound:
 		errorTemplate = "404.html"
+	case http.StatusMethodNotAllowed:
+		errorTemplate = "405.html"		
 	case http.StatusInternalServerError:
 		errorTemplate = "500.html"
 	default:
 		http.Error(w, http.StatusText(status), status)
 		return
 	}
-
 	w.WriteHeader(status)
 	renderTemplate(w, errorTemplate, nil)
 }
