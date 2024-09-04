@@ -79,12 +79,12 @@ func asciiArtHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Load banner and generate ASCII art
-	load, err := asciiart.Load(style + ".txt")
+	Lresult, err := asciiart.Load(style + ".txt")
 	if err != nil {
 		renderError(w, http.StatusInternalServerError)
 		return
 	}
-	result := asciiart.GenerateAsciiArt(text, load)
+	result := asciiart.GenerateAsciiArt(text, Lresult)
 
 	data := Data{
 		Text:   text,
