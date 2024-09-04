@@ -9,13 +9,13 @@
     <link rel = "preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href = "https://fonts.googleapis.com/css2?family=Signika:wght@400;500;600;700&display=swap" rel ="stylesheet">
 
-    <title> Bad Request </title>
+    <title>Error {{.Status}}</title>
 </head>
 <body>
     <div class = "error">
-        <h1> 400 Bad Request </h1>
-        <p> The server cannot or will not process the request due to something that is perceived to be a client error </p>
-        <a href = "/"> Home Page </a>
+        <h1>Error {{.Status}}</h1>
+        <p>{{.Message}}</p>
+        <a href="/"> Home Page </a>
     </div> 
 </body>
 </html>

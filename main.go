@@ -3,8 +3,9 @@ package main
 import (
 	"ascii-art-web/asciiart"
 	"html/template"
-	"net/http"
 	"log"
+	"net/http"
+	"strings"
 )
 
 // Preloaded templates map
@@ -16,7 +17,7 @@ type Data struct {
 }
 
 func init() {
-	loadTemplates("home.html", "400.html", "404.html", "405.html", "500.html")
+	loadTemplates("home.html", "error.html")
 }
 
 
@@ -68,7 +69,7 @@ func asciiArtHandler(w http.ResponseWriter, r *http.Request) {
 	text := r.FormValue("text")
 	style := r.FormValue("style")
 
-	if text == "" || !asciiart.Validation(text) {
+	if strings.TrimSpace(text) == "" || !asciiart.Validation(text) {
 		renderError(w, http.StatusBadRequest)
 		return
 	}
@@ -109,20 +110,13 @@ func renderTemplate(w http.ResponseWriter, tmpl string, data interface{}) {
 
 // renderError renders an error page based on the status code
 func renderError(w http.ResponseWriter, status int) {
-	var errorTemplate string
-	switch status {
-	case http.StatusBadRequest:
-		errorTemplate = "400.html"
-	case http.StatusNotFound:
-		errorTemplate = "404.html"
-	case http.StatusMethodNotAllowed:
-		errorTemplate = "405.html"		
-	case http.StatusInternalServerError:
-		errorTemplate = "500.html"
-	default:
-		http.Error(w, http.StatusText(status), status)
-		return
+	data := struct {
+		Status  int
+		Message string
+	}{
+		Status:  status,
+		Message: http.StatusText(status),
 	}
 	w.WriteHeader(status)
-	renderTemplate(w, errorTemplate, nil)
+	renderTemplate(w, "error.html", data)
 }
