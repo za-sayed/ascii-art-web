@@ -20,14 +20,12 @@ func init() {
 	loadTemplates("home.html", "error.html")
 }
 
-
 func main() {
 	// Route handlers
 	http.HandleFunc("/", routeHandler)
 	http.HandleFunc("/ascii-art", asciiArtHandler)
 
-	// Serve static files from the static directory
-	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("style"))))
+	http.Handle("/style/", http.StripPrefix("/style/", http.FileServer(http.Dir("style"))))
 
 	log.Println("Starting server on http://localhost:8080")
 	if err := http.ListenAndServe(":8080", nil); err != nil {
